@@ -34,9 +34,14 @@ public class EventList extends AppCompatActivity {
 
         adapter = new EventListAdapter(options);
 
+        Log.i("eventlist  query", query.toString());
+        Log.i("eventlist  adapter", adapter.toString());
+
         rView = findViewById(R.id.rView);
         rView.setAdapter(adapter);
         rView.setLayoutManager(new LinearLayoutManager(this));
+
+        Log.i("eventlist", "hangu333");
 
     }
 
