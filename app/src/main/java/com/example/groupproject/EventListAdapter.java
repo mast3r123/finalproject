@@ -48,9 +48,9 @@ public class EventListAdapter extends FirebaseRecyclerAdapter<Event, EventListAd
 
         Glide.with(holder.imgEventListImage.getContext()).load(model.getImages().get(0)).into(holder.imgEventListImage);
         holder.txtEventListName.setText(model.getName());
-        holder.txtEventListDuration.setText(model.getDuration());
+        holder.txtEventListDuration.setText("Duration: " + model.getDuration());
         holder.txtEventListHostName.setText("Host: " + model.getHost_name());
-        holder.txtEventListDescription.setText(model.getDescription().substring(0, 50) + "...");
+        holder.txtEventListDescription.setText("Description: " + model.getDescription().substring(0, 50) + "...");
 
         holder.model = model;
     }
