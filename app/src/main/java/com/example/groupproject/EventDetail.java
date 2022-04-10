@@ -12,6 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -51,15 +57,45 @@ public class EventDetail extends AppCompatActivity {
 
 
         btnBuy.setOnClickListener(view -> {
-//            Intent checkOutIntent = new Intent(this, Checkout.class);
-//            String id = i.getStringExtra("event_detail_id");
-//            startActivity(checkOutIntent);
+            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+            Intent i = getIntent();
+            Bundle extra = i.getExtras();
+            ArrayList<String> url = extra.getStringArrayList("event_detail_images");
+            String imageUrl = url.get(0);
+            Cart cart = new Cart(i.getStringExtra("event_detail_name"), imageUrl, "$100", 1.0);
+
+            Query queryToGetData = rootRef.child("cart")
+                    .orderByChild("name").equalTo(i.getStringExtra("event_detail_name"));
+
+            queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(!dataSnapshot.exists()){
+                        rootRef.child("cart").push().setValue(cart, (databaseError, databaseReference) -> {
+                            Log.i("Pushed", "Pushed");
+                            startActivity();
+                        });
+                    } else {
+                        startActivity();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.i("Cancelled", "Cancelled");
+                }
+            });
         });
 
         btnToList.setOnClickListener(view -> {
             Intent eventListIntent = new Intent(this, EventList.class);
             startActivity(eventListIntent);
         });
+    }
+
+    private void startActivity() {
+        Intent myIntent = new Intent(this, CartActivity.class);
+        this.startActivity(myIntent);
     }
 
     private void setEventDetailData(){
