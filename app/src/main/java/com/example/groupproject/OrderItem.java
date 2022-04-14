@@ -1,31 +1,19 @@
 package com.example.groupproject;
 
-public class Cart {
-    private String userid;
+public class OrderItem {
+
     private String name;
     private String url;
     private String price;
-    private Double quantity;
+    private String quantity;
 
-    public Cart() {
-
-    }
-
-    public Cart(String userid, String name, String url, String price, Double quantity) {
-        this.userid = userid;
+    public OrderItem(String name, String url, String price, String quantity) {
         this.name = name;
         this.url = url;
         this.price = price;
         this.quantity = quantity;
     }
-
-    public String getUserid() {
-        return userid;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid;
-    }
+    public OrderItem(){}
 
     public String getName() {
         return name;
@@ -51,12 +39,11 @@ public class Cart {
         this.price = price;
     }
 
-    public Double getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
 }
-

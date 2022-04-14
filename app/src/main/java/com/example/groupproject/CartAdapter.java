@@ -24,7 +24,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CartAdapter extends FirebaseRecyclerAdapter<Cart, CartAdapter.MyViewHolder> {
     public CartAdapter(FirebaseRecyclerOptions<Cart> options) {
@@ -124,18 +126,28 @@ public class CartAdapter extends FirebaseRecyclerAdapter<Cart, CartAdapter.MyVie
         query1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                List<String> orderItems = new ArrayList<String>();
                 double count = 0;
                 for (DataSnapshot foodTypeSnapshot: dataSnapshot.getChildren()) {
+                    String name = foodTypeSnapshot.child("name").getValue(String.class);
+                    String url = foodTypeSnapshot.child("url").getValue(String.class);
                     String price = foodTypeSnapshot.child("price").getValue(String.class);
                     double quantity = Double.valueOf(foodTypeSnapshot.child("quantity").getValue(double.class));
 
                     Integer finalPrice = Integer.parseInt(price.replace("$", ""));
                     Double total = finalPrice * quantity;
                     count += total;
+
+                    // Pass orderItem data to the checkout activity.
+                    String orderItemString = name + "|" + url + "|" + price + "|" + String.valueOf(quantity);
+                    orderItems.add(orderItemString);
                 }
+
                 Log.d("TAG", count + "");
                 Intent intent = new Intent("total-count");
+
                 intent.putExtra("total", String.valueOf(count));
+                intent.putStringArrayListExtra("orderitems", new ArrayList<String>(orderItems));
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
 

@@ -33,19 +33,6 @@ public class EventListAdapter extends FirebaseRecyclerAdapter<Event, EventListAd
 
     @Override
     protected void onBindViewHolder(@NonNull EventListAdapter.MyViewHolder holder, int position, @NonNull Event model) {
-
-        Log.i("hangu3444", "what");
-        Log.i("model id", model.getId());
-        Log.i("model g", model.getGroup());
-        Log.i("model hn", model.getHost_name());
-        Log.i("model d", model.getHost_description());
-        Log.i("model h im", model.getHost_image());
-        Log.i("model getDuration", model.getDuration());
-        Log.i("model desc", model.getDescription());
-        Log.i("model getImages 0", model.getImages().get(0));
-        Log.i("model getImages 1", model.getImages().get(1));
-        Log.i("model getImages 02", model.getImages().get(2));
-
         Glide.with(holder.imgEventListImage.getContext()).load(model.getImages().get(0)).into(holder.imgEventListImage);
         holder.txtEventListName.setText(model.getName());
         holder.txtEventListDuration.setText("Duration: " + model.getDuration());

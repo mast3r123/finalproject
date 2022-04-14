@@ -24,8 +24,6 @@ public class EventList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
 
-        Log.i("eventlist", "hangu");
-
         // Show Plant List
         query = FirebaseDatabase.getInstance().getReference().child("events");
         FirebaseRecyclerOptions<Event> options = new FirebaseRecyclerOptions.Builder<Event>()
@@ -34,15 +32,9 @@ public class EventList extends AppCompatActivity {
 
         adapter = new EventListAdapter(options);
 
-        Log.i("eventlist  query", query.toString());
-        Log.i("eventlist  adapter", adapter.toString());
-
         rView = findViewById(R.id.rView);
         rView.setAdapter(adapter);
         rView.setLayoutManager(new LinearLayoutManager(this));
-
-        Log.i("eventlist", "hangu333");
-
     }
 
     @Override

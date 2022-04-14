@@ -18,13 +18,18 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CartActivity extends AppCompatActivity {
 
     FirebaseRecyclerAdapter adapter;
     RecyclerView rView;
     Button btnCheckout;
+    Button btnToEventList;
     Query query;
     TextView textTotal;
+    ArrayList<String> orderItemStrings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,9 @@ public class CartActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String total = intent.getStringExtra("total");
             textTotal.setText("$" + total);
+
+            final Bundle extra = intent.getExtras();
+            orderItemStrings = extra.getStringArrayList("orderitems");
         }
     };
 
@@ -62,8 +70,14 @@ public class CartActivity extends AppCompatActivity {
             if (!textTotal.getText().equals("$0.0")) {
                 Intent myIntent = new Intent(this, CheckoutActivity.class);
                 myIntent.putExtra("total", textTotal.getText());
+                myIntent.putStringArrayListExtra("orderitems", orderItemStrings);
                 this.startActivity(myIntent);
             }
         });
+//        btnToEventList.setOnClickListener(view -> {
+//            Intent newIntent = new Intent(this, EventList.class);
+//            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            startActivity(newIntent);
+//        });
     }
 }
