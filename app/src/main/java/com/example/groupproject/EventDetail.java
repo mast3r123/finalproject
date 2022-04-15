@@ -10,8 +10,10 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,10 +39,13 @@ public class EventDetail extends AppCompatActivity {
     Button btnBuy;
     Button btnToList;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
+        mAuth = FirebaseAuth.getInstance();
 
         txtEventDetailName = findViewById(R.id.txtEventDetailName);
         txtEventDetailDescription = findViewById(R.id.txtEventDetailDescription);
@@ -62,7 +67,7 @@ public class EventDetail extends AppCompatActivity {
             Bundle extra = i.getExtras();
             ArrayList<String> url = extra.getStringArrayList("event_detail_images");
             String imageUrl = url.get(0);
-            Cart cart = new Cart(i.getStringExtra("event_detail_name"), imageUrl, "$100", 1.0);
+            Cart cart = new Cart(mAuth.getCurrentUser().getUid(),i.getStringExtra("event_detail_name"), imageUrl, "$100", 1.0);
 
             Query queryToGetData = rootRef.child("cart")
                     .orderByChild("name").equalTo(i.getStringExtra("event_detail_name"));
